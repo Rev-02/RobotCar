@@ -4,7 +4,7 @@
 #define m1_bwd 10
 #define m2_fwd 11
 #define m2_bwd 12
-#define motor_speed 150 //max 255
+#define motor_speed 151 //max 255
 
 void setup() {
   // put your setup code here, to run once:
