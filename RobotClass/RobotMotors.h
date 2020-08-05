@@ -54,7 +54,8 @@ public:
   }
 };
 
-class MotorPwm : Motor{
+class MotorPwm : protected Motor{
+public:
   MotorPwm(int fwdpin, int bckpin, int enapin): Motor(fwdpin, bckpin, enapin){
     Speed = 255;
   }
@@ -97,16 +98,18 @@ class MotorPwm : Motor{
 
 class MotorEncoder : MotorPwm{
   MotorEncoder(int fwdpin, int bckpin, int enapin, int speed, int intpin) : MotorPwm(fwdpin,bckpin,enapin,speed){
+    Count = 0;
     pinMode(intpin, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
   }
 
   MotorEncoder(int fwdpin, int bckpin, int enapin, int intpin) : MotorPwm(fwdpin,bckpin,enapin){
     pinMode(intpin, INPUT_PULLUP);
+    Count = 0;
     attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
   }
 
-  void increaseCount(){
+  static void increaseCount(){
     Count ++;
   }
 
@@ -120,11 +123,11 @@ class MotorEncoder : MotorPwm{
       targetCount = (distance / circumference) * steps;
       if (forwards){
         previous = Count;
-        MotorPwm.Forwards();
+        MotorPwm::Forwards();
       }
       else{
         previous = Count;
-        MotorPwm.Backwards();
+        MotorPwm::Backwards();
       }
     }
   }
@@ -132,7 +135,7 @@ class MotorEncoder : MotorPwm{
   void updateDistance(){
     if (measuring){
       if ((Count - previous) >= targetCount) {
-        Stop();
+        MotorPwm::Stop();
         measuring = false;
       }
       else{
@@ -161,10 +164,10 @@ class MotorEncoder : MotorPwm{
     return steps;
   }
 protected:
-  unsigned long Count = 0;
+  static unsigned long Count;
   unsigned long previous = 0;
-  int Diameter = 650 //mm
-  int steps = 40 // number of pules on encoder per revolution
+  int Diameter = 650; //mm
+  int steps = 40; // number of pules on encoder per revolution
   bool measuring = false;
   int targetCount = 0;
-}
+};
