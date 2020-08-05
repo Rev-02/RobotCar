@@ -94,3 +94,77 @@ class MotorPwm : Motor{
  protected:
    int Speed;
 };
+
+class MotorEncoder : MotorPwm{
+  MotorEncoder(int fwdpin, int bckpin, int enapin, int speed, int intpin) : MotorPwm(fwdpin,bckpin,enapin,speed){
+    pinMode(intpin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
+  }
+
+  MotorEncoder(int fwdpin, int bckpin, int enapin, int intpin) : MotorPwm(fwdpin,bckpin,enapin){
+    pinMode(intpin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
+  }
+
+  void increaseCount(){
+    Count ++;
+  }
+
+  void moveDistance(bool forwards, int distance){ //distance in cm
+    if(measuring){
+        updateDistance();
+    }
+    else{
+      measuring = true;
+      double circumference = PI * Diameter;
+      targetCount = (distance / circumference) * steps;
+      if (forwards){
+        previous = Count;
+        MotorPwm.Forwards();
+      }
+      else{
+        previous = Count;
+        MotorPwm.Backwards();
+      }
+    }
+  }
+
+  void updateDistance(){
+    if (measuring){
+      if ((Count - previous) >= targetCount) {
+        Stop();
+        measuring = false;
+      }
+      else{
+        previous = Count;
+      }
+    }
+  }
+
+  long getCount(){
+    return Count;
+  }
+
+  int getDiameter(){
+    return Diameter;
+  }
+
+  void setDiameter(int diameter){
+    Diameter = diameter;
+  }
+
+  void setSteps(int Steps){
+    steps = Steps;
+  }
+
+  int getSteps(){
+    return steps;
+  }
+protected:
+  unsigned long Count = 0;
+  unsigned long previous = 0;
+  int Diameter = 650 //mm
+  int steps = 40 // number of pules on encoder per revolution
+  bool measuring = false;
+  int targetCount = 0;
+}
