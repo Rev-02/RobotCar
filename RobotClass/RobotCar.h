@@ -58,9 +58,39 @@ class MotorPwm : Motor{
   MotorPwm(int fwdpin, int bckpin, int enapin): Motor(fwdpin, bckpin, enapin){
     Speed = 255;
   }
+
   MotorPwm(int fwdpin, int bckpin, int enapin, int speed): Motor(fwdpin, bckpin, enapin){
     Speed = speed;
   }
+
+  void Forwards(){
+    if(motorState != forwards){
+      analogWrite(enapin,Speed);
+      digitalWrite(forwardsPin,HIGH);
+      digitalWrite(backwardsPin,LOW);
+    }
+  }
+
+  void Backwards(){
+    if (motorState != backwards){
+      analogWrite(enapin,speed);
+      digitalWrite(forwardsPin,LOW);
+      digitalWrite(backwardsPin,HIGH);
+    }
+  }
+
+  void SetSpeed(int speed){
+    if(speed <= 255 && speed >= 0){
+      Speed = speed;
+    }
+    else{
+      Speed = 0;
+    }
+    if ((motorState != brake)||(motorState!=stop)){
+      analogWrite(enablePin,Speed);
+    }
+  }
+
  protected:
    int Speed;
 };
