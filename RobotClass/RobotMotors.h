@@ -65,7 +65,7 @@ class MotorPwm : Motor{
 
   void Forwards(){
     if(motorState != forwards){
-      analogWrite(enapin,Speed);
+      analogWrite(enablePin,Speed);
       digitalWrite(forwardsPin,HIGH);
       digitalWrite(backwardsPin,LOW);
     }
@@ -73,7 +73,7 @@ class MotorPwm : Motor{
 
   void Backwards(){
     if (motorState != backwards){
-      analogWrite(enapin,speed);
+      analogWrite(enablePin,Speed);
       digitalWrite(forwardsPin,LOW);
       digitalWrite(backwardsPin,HIGH);
     }
