@@ -96,7 +96,8 @@ public:
    int Speed;
 };
 
-class MotorEncoder : MotorPwm{
+class MotorEncoder : public MotorPwm{
+public:
   MotorEncoder(int fwdpin, int bckpin, int enapin, int speed, int intpin) : MotorPwm(fwdpin,bckpin,enapin,speed){
     Count = 0;
     pinMode(intpin, INPUT_PULLUP);
@@ -110,7 +111,7 @@ class MotorEncoder : MotorPwm{
   }
 
   static void increaseCount(){
-    Count ++;
+    Count = Count + 1;
   }
 
   void moveDistance(bool forwards, int distance){ //distance in cm
@@ -171,3 +172,5 @@ protected:
   bool measuring = false;
   int targetCount = 0;
 };
+
+unsigned long MotorEncoder::Count = 0;
