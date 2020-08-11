@@ -101,16 +101,16 @@ public:
   MotorEncoder(int fwdpin, int bckpin, int enapin, int speed, int intpin) : MotorPwm(fwdpin,bckpin,enapin,speed){
     Count = 0;
     pinMode(intpin, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
+    //attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
   }
 
   MotorEncoder(int fwdpin, int bckpin, int enapin, int intpin) : MotorPwm(fwdpin,bckpin,enapin){
     pinMode(intpin, INPUT_PULLUP);
     Count = 0;
-    attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
+    //attachInterrupt(digitalPinToInterrupt(intpin), increaseCount, CHANGE);
   }
 
-  static void increaseCount(){
+  void increaseCount(){
     Count = Count + 1;
   }
 
@@ -165,12 +165,10 @@ public:
     return steps;
   }
 protected:
-  static unsigned long Count;
+  unsigned long Count = 0L;
   unsigned long previous = 0;
   int Diameter = 650; //mm
   int steps = 40; // number of pules on encoder per revolution
   bool measuring = false;
   int targetCount = 0;
 };
-
-unsigned long MotorEncoder::Count = 0;
