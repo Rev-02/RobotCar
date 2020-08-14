@@ -136,19 +136,22 @@ public:
   void calculateRPM(){
     Currentmillis = millis();
     rpmCurrent = Count;
-    if (Currentmillis!=Previousmillis){
-      long elapsed = Currentmillis-Previousmillis;
-      long rpmElapsed = rpmCurrent - rpmPrevious;
-      rpmElapsed = rpmElapsed/steps;
-      rpm = rpmElapsed/((elapsed/1000)*60);
+    if(Previousmillis == 0){
       Previousmillis = Currentmillis;
     }
-    else{
-      Previousmillis = Currentmillis;
+    if (Currentmillis-Previousmillis >= 200){
+      if (rpmCurrent != 0){
+        long elapsed = Currentmillis-Previousmillis;
+        float rpmElapsed = (float)(rpmCurrent - rpmPrevious);
+        float stepdiv = rpmElapsed/steps;
+        rpm = stepdiv*(60000/elapsed);
+        Previousmillis = Currentmillis;
+        rpmPrevious = rpmCurrent;
+      }
     }
   }
 
-  int Getrpm(){
+  float Getrpm(){
     return rpm;
   }
   void updateDistance(){
@@ -185,13 +188,13 @@ public:
 protected:
   unsigned long Count = 0L;
   unsigned long previous = 0;
-  unsigned long rpmPrevious = 0;
+  unsigned long rpmPrevious = 1;
   unsigned long rpmCurrent = 0;
-  int rpm = 0;
+  float rpm = 0.0;
   unsigned long Currentmillis;
-  unsigned long Previousmillis;
+  unsigned long Previousmillis = millis();
   int Diameter = 650; //mm
-  int steps = 40; // number of pules on encoder per revolution
+  int steps = 20; // number of pules on encoder per revolution
   bool measuring = false;
   int targetCount = 0;
 };
