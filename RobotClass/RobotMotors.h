@@ -133,6 +133,24 @@ public:
     }
   }
 
+  void calculateRPM(){
+    Currentmillis = millis();
+    rpmCurrent = Count;
+    if (Currentmillis!=Previousmillis){
+      long elapsed = Currentmillis-Previousmillis;
+      long rpmElapsed = rpmCurrent - rpmPrevious;
+      rpmElapsed = rpmElapsed/steps;
+      rpm = rpmElapsed/((elapsed/1000)*60);
+      Previousmillis = Currentmillis;
+    }
+    else{
+      Previousmillis = Currentmillis;
+    }
+  }
+
+  int Getrpm(){
+    return rpm;
+  }
   void updateDistance(){
     if (measuring){
       if ((Count - previous) >= targetCount) {
@@ -167,6 +185,11 @@ public:
 protected:
   unsigned long Count = 0L;
   unsigned long previous = 0;
+  unsigned long rpmPrevious = 0;
+  unsigned long rpmCurrent = 0;
+  int rpm = 0;
+  unsigned long Currentmillis;
+  unsigned long Previousmillis;
   int Diameter = 650; //mm
   int steps = 40; // number of pules on encoder per revolution
   bool measuring = false;

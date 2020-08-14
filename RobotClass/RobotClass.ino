@@ -24,5 +24,7 @@ motor2.Forwards();
 Serial.print(motor1.getCount());
 Serial.print(" , ");
 Serial.println(motor2.getCount());
+motor1.calculateRPM();
+Serial.println(motor1.Getrpm());
 delay(10);
 }
