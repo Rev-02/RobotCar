@@ -66,6 +66,7 @@ public:
 
   void Forwards(){
     if(motorState != forwards){
+      motorState = forwards;
       analogWrite(enablePin,Speed);
       digitalWrite(forwardsPin,HIGH);
       digitalWrite(backwardsPin,LOW);
@@ -74,6 +75,7 @@ public:
 
   void Backwards(){
     if (motorState != backwards){
+      motorState = backwards;
       analogWrite(enablePin,Speed);
       digitalWrite(forwardsPin,LOW);
       digitalWrite(backwardsPin,HIGH);
@@ -114,7 +116,7 @@ public:
     Count = Count + 1;
   }
 
-  void moveDistance(bool forwards, int distance){ //distance in cm
+  void moveDistance(bool forwards, int distance){ //distance in mm
     if(measuring){
         updateDistance();
     }
@@ -156,9 +158,11 @@ public:
   }
   void updateDistance(){
     if (measuring){
-      if ((Count - previous) >= targetCount) {
-        MotorPwm::Stop();
+      distanceAggr += (Count-previous);
+      if ((distanceAggr) >= targetCount) {
+        Motor::Brake();
         measuring = false;
+        distanceAggr = 0;
       }
       else{
         previous = Count;
@@ -170,11 +174,11 @@ public:
     return Count;
   }
 
-  int getDiameter(){
+  double getDiameter(){
     return Diameter;
   }
 
-  void setDiameter(int diameter){
+  void setDiameter(double diameter){
     Diameter = diameter;
   }
 
@@ -193,8 +197,9 @@ protected:
   float rpm = 0.0;
   unsigned long Currentmillis;
   unsigned long Previousmillis = millis();
-  int Diameter = 650; //mm
+  double Diameter = 65.0; //mm
   int steps = 20; // number of pules on encoder per revolution
   bool measuring = false;
   int targetCount = 0;
+  int distanceAggr = 0;
 };
