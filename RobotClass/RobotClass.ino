@@ -1,5 +1,7 @@
 #include "RobotMotors.h"
 
+#include "RobotIrSensor.h"
+
 MotorEncoder motor1(11,12,6,255,2);
 MotorEncoder motor2(9,10,5,255,3);
 
