@@ -13,4 +13,13 @@ An Arduino controlled robot car with wheel encoders, line following, and distanc
 ---
 For pinout see *pinout.md*
 ---
-To access the rotary encoders, an ISR needs to be made within the sketch, and assigned to each instance on setup using the attach_Interupt method. See *RobotClass.ino* for an example.
+To access the rotary encoders, an ISR needs to be made within the sketch, and assigned to each instance on setup using the attach_Interupt method. see this example:
+```
+MotorEncoder motor1(11,12,6,255,2);
+void ISR1(){
+  motor1.increaseCount();
+}
+void setup(){
+attachInterrupt(digitalPinToInterrupt(2), ISR1, FALLING);
+}
+```
