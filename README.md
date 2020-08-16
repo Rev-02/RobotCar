@@ -11,7 +11,7 @@ An Arduino controlled robot car with wheel encoders, line following, and distanc
 - HCSR04
 
 ---
-For pinout see *pinout.md*
+- For pinout see *pinout.md*
 ---
 To access the rotary encoders, an ISR needs to be made within the sketch, and assigned to each instance on setup using the attachInterupt method. see this example:
 ```
