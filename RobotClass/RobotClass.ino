@@ -1,10 +1,8 @@
 #include "RobotMotors.h"
-#include "2wheelrobot.h"
 #include "RobotIrSensor.h"
-
+#include "2wheelrobot.h"
 MotorEncoder motor1(11,12,6,255,2);
 MotorEncoder motor2(9,10,5,255,3);
-
 void ISR1(){
   motor1.increaseCount();
 }

@@ -189,6 +189,11 @@ public:
   int getSteps(){
     return steps;
   }
+
+  void stopMeasuring(){
+    Motor::Stop();
+    measuring = false;
+  }
 protected:
   unsigned long Count = 0L;
   unsigned long previous = 0;
