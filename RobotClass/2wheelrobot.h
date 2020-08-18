@@ -19,8 +19,8 @@ protected:
   bool correcting = true;
   unsigned long previousMillis = 0;
   unsigned long currentMillis = 0;
-  int speedIncrement = 10;
-  int threshold = 5;
+  int speedIncrement = 7;
+  int threshold = 3;
 public:
   TwoWheelRobot(const MotorEncoder &m1,const MotorEncoder &m2,const IrSensor &l_s_pin,const IrSensor &r_s_pin): m1(m1),m2(m2),leftSens(l_s_pin),rightSens(r_s_pin){
     m1.SetSpeed(leftspeed);
