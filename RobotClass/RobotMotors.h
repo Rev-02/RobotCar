@@ -18,7 +18,7 @@ public:
     pinMode(enablePin, OUTPUT);
   }
 
-  void Stop(){
+ virtual void Stop(){
     if (motorState != stop){
       motorState = stop;
       digitalWrite(enablePin, LOW);
@@ -27,7 +27,7 @@ public:
     }
   }
 
-  void Forwards(){
+  virtual void Forwards(){
     if (motorState != forwards){
       motorState = forwards;
       digitalWrite(enablePin, HIGH);
@@ -36,7 +36,7 @@ public:
     }
   }
 
-  void Backwards(){
+  virtual void Backwards(){
     if (motorState != backwards){
       motorState = backwards;
       digitalWrite(enablePin, HIGH);
@@ -54,7 +54,7 @@ public:
   }
 };
 
-class MotorPwm : protected Motor{
+class MotorPwm : public Motor{
 public:
   MotorPwm(int fwdpin, int bckpin, int enapin): Motor(fwdpin, bckpin, enapin){
     Speed = 255;
@@ -64,7 +64,7 @@ public:
     Speed = speed;
   }
 
-  void Forwards(){
+   void Forwards() override {
     if(motorState != forwards){
       motorState = forwards;
       analogWrite(enablePin,Speed);
@@ -73,7 +73,7 @@ public:
     }
   }
 
-  void Backwards(){
+   void Backwards() override {
     if (motorState != backwards){
       motorState = backwards;
       analogWrite(enablePin,Speed);
@@ -89,7 +89,7 @@ public:
     else{
       Speed = 0;
     }
-    if ((motorState != brake)||(motorState!=stop)){
+    if ((motorState != brake)&&(motorState!=stop)){
       analogWrite(enablePin,Speed);
     }
   }
@@ -137,7 +137,7 @@ public:
 
   void calculateRPM(){
     Currentmillis = millis();
-    rpmCurrent = Count;
+    rpmCurrent = getCount();
     if(Previousmillis == 0){
       Previousmillis = Currentmillis;
     }
@@ -156,16 +156,18 @@ public:
   float Getrpm(){
     return rpm;
   }
-  void updateDistance(){
+  bool updateDistance(){
     if (measuring){
       distanceAggr += (Count-previous);
       if ((distanceAggr) >= targetCount) {
         Motor::Brake();
         measuring = false;
         distanceAggr = 0;
+        return false;
       }
       else{
         previous = Count;
+        return true;
       }
     }
   }
@@ -190,7 +192,7 @@ public:
     return steps;
   }
 
-  void stopMeasuring(){
+  void Stop() override {
     Motor::Stop();
     measuring = false;
   }
