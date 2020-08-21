@@ -1,0 +1,17 @@
+# Arduino Pins
+ - 1
+ - 2 Encoder 1
+ - 3 Encoder 2
+ - 4
+ - 5 m2 en
+ - 6 m1 en
+ - 7 sens1
+ - 8 sens2
+ - 9 m2 in1
+ - 10 m2 in2
+ - 11 m1 in1
+ - 12 m1 in2
+ - 13
+ - 5v l298n, encoders, sensors,
+ - 3.3v
+ - GND

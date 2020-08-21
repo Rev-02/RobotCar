@@ -13,6 +13,8 @@ An Arduino controlled robot car with wheel encoders, line following, and distanc
 ---
 - For pinout see *pinout.md*
 ---
+
+## Using Interrutps
 To access the rotary encoders, an ISR needs to be made within the sketch, and assigned to each instance on setup using the attachInterupt method. see this example:
 ```
 MotorEncoder motor1(11,12,6,255,2);
@@ -23,3 +25,4 @@ void setup(){
 attachInterrupt(digitalPinToInterrupt(2), ISR1, FALLING);
 }
 ```
+alternatively using the TwoWheelRobot class, attachInterupt to the *ISR1* and *ISR2* methods respectively.

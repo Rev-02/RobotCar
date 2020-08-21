@@ -84,6 +84,24 @@ public:
     }
   }
 
+  void updateDistance(){
+    if(measuring){
+      m1.updateDistance();
+      m2.updateDistance();
+    }
+  }
+
+`void moveDistance(bool forwards, int mm){
+  if(measuring){
+    updateDistance();
+  }
+  else{
+    m1.moveDistance(forwards,mm);
+    m2.moveDistance(forwards,mm);
+    measuring = true;
+  }
+}`
+
   void updateCorrection(){
     if(correcting){
       m1.calculateRPM();
