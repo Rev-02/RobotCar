@@ -12,8 +12,8 @@ An Arduino controlled robot car with wheel encoders, line following, and distanc
 ---
 - Files
 - - RobotClass has the full object oriented implementation
-- - Robot-Motor-First-Test is code to check the wiring on the robot
-- - Robot-HCSR04 was a simple autonomous proceduaral script using distance sensing
+- - Robot-first_motor_test is code to check the wiring on the robot
+- - Robot-Motors-HCSR04 was a simple autonomous proceduaral script using distance sensing
 ---
 - For pinout see *pinout.md*
 ---
