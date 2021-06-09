@@ -5,13 +5,13 @@ protected:
     backwards,
     brake,
     stop,
-    turnC,
-    turnAC,
+    turnR,
+    turnL,
   };
   robotstate state = stop;
-  int leftspeed = 145;
-  int rightspeed = 145;
-  int targetspeed = 145;
+  int leftspeed = 140;
+  int rightspeed = 140;
+  int targetspeed = 140;
   const MotorEncoder m1;
   const MotorEncoder m2;
   const IrSensor leftSens;
@@ -68,6 +68,18 @@ public:
     m1.Stop();
     m2.Stop();
     correcting = false;
+  }
+
+  void Right(){
+    state = turnR;
+    m2.Brake();
+    m1.Forwards();
+  }
+
+  void Left(){
+    state = turnL;
+    m1.Brake();
+    m2.Forwards();
   }
 
   void ForwardsCorrected(){
@@ -182,24 +194,10 @@ void moveDistance(bool forwards, int mm){
   void updateLineFollow(){
     getBothSens();
     if(lsens == light && rsens !=light){
-      if (leftspeed - speedIncrement > 0){
-      leftspeed -= speedIncrement;
-      m1.SetSpeed(leftspeed);
-      }
-      if (rightspeed + speedIncrement < targetspeed){
-      rightspeed += speedIncrement;
-      m2.SetSpeed(rightspeed);
-      }
+      Left();
     }
     else if(lsens != light && rsens ==light){
-      if (rightspeed - speedIncrement > 0){
-      rightspeed -= speedIncrement;
-      m2.SetSpeed(rightspeed);
-      }
-      if (leftspeed + speedIncrement < targetspeed){
-      leftspeed += speedIncrement;
-      m1.SetSpeed(leftspeed);
-      }
+      Right();
     }
     else if ((lsens == light) && rsens == light){
       rightspeed = targetspeed;
