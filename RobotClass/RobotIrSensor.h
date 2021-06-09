@@ -11,18 +11,20 @@ protected:
   int Pin;
 };
 
-public IrSensorAnalogue : public IrSensor{
+class IrSensorAnalogue : public IrSensor{
 public:
-  IrSensorAnalogue(int pin, int thresh){
+  IrSensorAnalogue(int pin, int thresh) : IrSensor(pin){
     Pin = pin;
     Thresh = thresh;
   }
   bool getStatus() override{
-    if (analogRead(pin) < Thresh){
+    if (analogRead(Pin) < Thresh){
       return true;
     }
     else{
       return false;
     }
   }
-}
+protected:
+  int Thresh;
+};
