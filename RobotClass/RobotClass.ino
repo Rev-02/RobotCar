@@ -3,8 +3,8 @@
 #include "2wheelrobot.h"
 MotorEncoder motor1(12,11,6,255,2);
 MotorEncoder motor2(10,9,5,255,3);
-IrSensor sens1(7);
-IrSensor sens2(8);
+IrSensor sens1(A0);
+IrSensor sens2(A1);
 TwoWheelRobot robo(motor1,motor2,sens1,sens2);
 
 void ISR1(){

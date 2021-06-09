@@ -5,8 +5,8 @@
  - 4
  - 5 m2 en
  - 6 m1 en
- - 7 sens1
- - 8 sens2
+ - 7 
+ - 8
  - 9 m2 in1
  - 10 m2 in2
  - 11 m1 in1
@@ -15,8 +15,8 @@
  - 5v l298n, encoders, sensors,
  - 3.3v
  - GND
- - A0
- - A1
+ - A0 sens1
+ - A1 sens2
  - A2
  - A3 HCSR04 TRIG
  - A4 HCSR04 ECHO
