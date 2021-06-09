@@ -9,18 +9,23 @@ protected:
     turnAC,
   };
   robotstate state = stop;
-  int leftspeed = 210;
-  int rightspeed = 210;
-  int targetspeed = 210;
+  int leftspeed = 145;
+  int rightspeed = 145;
+  int targetspeed = 145;
   const MotorEncoder m1;
   const MotorEncoder m2;
   const IrSensor leftSens;
   const IrSensor rightSens;
   bool correcting = true;
+  bool measuring;
   unsigned long previousMillis = 0;
   unsigned long currentMillis = 0;
   int speedIncrement = 7;
   int threshold = 3;
+  bool lsens = false;
+  bool rsens = false;
+  bool linefollowing = false;
+  bool light = true;
 public:
   TwoWheelRobot(const MotorEncoder &m1,const MotorEncoder &m2,const IrSensor &l_s_pin,const IrSensor &r_s_pin): m1(m1),m2(m2),leftSens(l_s_pin),rightSens(r_s_pin){
     m1.SetSpeed(leftspeed);
@@ -91,7 +96,7 @@ public:
     }
   }
 
-`void moveDistance(bool forwards, int mm){
+void moveDistance(bool forwards, int mm){
   if(measuring){
     updateDistance();
   }
@@ -100,7 +105,7 @@ public:
     m2.moveDistance(forwards,mm);
     measuring = true;
   }
-}`
+}
 
   void updateCorrection(){
     if(correcting){
@@ -145,5 +150,63 @@ public:
       m2.SetSpeed(rightspeed);
     }
   }
+  }
+
+  bool getLSens(){
+    lsens = leftSens.getStatus();
+    return lsens;
+  }
+  bool getRSens(){
+    rsens = rightSens.getStatus();
+    return rsens;
+  }
+  void getBothSens(){
+    getLSens();
+    getRSens();
+  }
+
+  void lineFollow( bool light_line){
+    light = light_line;
+    if (!linefollowing)
+    getBothSens();
+    if ((lsens != light) && (rsens != light)){
+      linefollowing = true;
+      Forwards();
+      updateLineFollow();
+    }
+    else{
+      updateLineFollow();
+    }
+  }
+
+  void updateLineFollow(){
+    getBothSens();
+    if(lsens == light && rsens !=light){
+      if (leftspeed - speedIncrement > 0){
+      leftspeed -= speedIncrement;
+      m1.SetSpeed(leftspeed);
+      }
+      if (rightspeed + speedIncrement < targetspeed){
+      rightspeed += speedIncrement;
+      m2.SetSpeed(rightspeed);
+      }
+    }
+    else if(lsens != light && rsens ==light){
+      if (rightspeed - speedIncrement > 0){
+      rightspeed -= speedIncrement;
+      m2.SetSpeed(rightspeed);
+      }
+      if (leftspeed + speedIncrement < targetspeed){
+      leftspeed += speedIncrement;
+      m1.SetSpeed(leftspeed);
+      }
+    }
+    else if ((lsens == light) && rsens == light){
+      rightspeed = targetspeed;
+      leftspeed = targetspeed;
+      m1.SetSpeed(leftspeed);
+      m2.SetSpeed(rightspeed);
+      Forwards();
+    }
   }
 };

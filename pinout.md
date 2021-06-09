@@ -15,3 +15,9 @@
  - 5v l298n, encoders, sensors,
  - 3.3v
  - GND
+ - A0
+ - A1
+ - A2
+ - A3 HCSR04 TRIG
+ - A4 HCSR04 ECHO
+ - A5
